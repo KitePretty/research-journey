@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
+/* -------------------------- 数据 -------------------------- */
 const projects = [
   {
     id: 1,
+    hero: "/hero/1.webp",
     title: "AI in Health",
     time: "2025.09 – Present",
     year: 2025,
@@ -21,6 +23,7 @@ const projects = [
   },
   {
     id: 2,
+    hero: "/hero/2.webp",
     title: "Rainbow School: Virtual Queer Utopian School",
     time: "2025.09 – Present",
     year: 2025,
@@ -39,6 +42,7 @@ const projects = [
   },
   {
     id: 3,
+    hero: "/hero/3.webp",
     title: "From Source to Action: Machine Heuristics in AI-Mediated Advice",
     time: "2025.08 – Present",
     year: 2025,
@@ -55,6 +59,7 @@ const projects = [
   },
   {
     id: 4,
+    hero: "/hero/4.webp",
     title: "Women's Yoga Body Image on Xiaohongshu",
     time: "2024.12 – Present",
     year: 2024,
@@ -62,15 +67,16 @@ const projects = [
     method: 0.1,
     theme: "Social Media",
     color: "#37D5D6",
-    size: "medium",
+    size: "large",
     summary: "How are women's bodies represented in yoga-related content on Xiaohongshu, and what implications does this have for body image?",
-    data: "1,000 posts and images from #yoga hashtags on Xiaohongshu",
+    data: "1,000+ posts with 3586 images from #yoga, #yoga life and #yoga girl hashtags on Xiaohongshu",
     methodDetail: "Feminist-informed content analysis with descriptive statistics to examine representation patterns",
     outcome: "Draft (Target: Body Image journal)",
     significance: "Contributes to understanding how social media platforms shape body image discourses in non-Western contexts"
   },
   {
     id: 5,
+    hero: "/hero/5.webp",
     title: "TikTok Refugees on Xiaohongshu",
     time: "2025.03 – 2025.07",
     year: 2025,
@@ -82,11 +88,12 @@ const projects = [
     summary: "How did TikTok users reconstruct identity and community after migrating to Xiaohongshu following platform restrictions?",
     data: "586 user comments from cross-cultural discussion threads",
     methodDetail: "Discourse analysis examining identity negotiation, community formation, and cultural adaptation strategies",
-    outcome: "Accepted at 60th Anniversary Graduate Student Conference, School of Journalism and Communication, CUHK + arXiv preprint (arXiv:2507.14465)",
+    outcome: "Accepted at 60th Anniversary Graduate Student Conference, School of Journalism and Communication, The Chinese University of Hong Kong + arXiv preprint (arXiv:2507.14465)",
     significance: "Reveals how digital migration reshapes user identity and highlights platform governance implications"
   },
   {
     id: 6,
+    hero: "/hero/6.webp",
     title: "Technology Acceptance of EHR in China",
     time: "2024.04 – 2025.02",
     year: 2024,
@@ -96,13 +103,14 @@ const projects = [
     color: "#4FB8FF",
     size: "large",
     summary: "What factors affect user acceptance of electronic health records (EHR) among healthcare professionals and patients in China?",
-    data: "Online survey with 1,085 valid responses from healthcare stakeholders",
+    data: "Online survey with 883 valid responses from healthcare stakeholders",
     methodDetail: "Survey analysis using the UTAUT3 model to identify key determinants of technology acceptance",
     outcome: "In Submission at IISE Transactions on Healthcare Systems Engineering",
     significance: "Provides evidence-based recommendations for EHR implementation in healthcare systems"
   },
   {
     id: 7,
+    hero: "/hero/7.webp",
     title: "Impact of Video Pace, Ad Relevance, and Color on Attention",
     time: "2024.01 – 2024.06",
     year: 2024,
@@ -119,6 +127,7 @@ const projects = [
   },
   {
     id: 8,
+    hero: "/hero/8.webp",
     title: "AR Filter Virtuality and Interaction on TikTok",
     time: "2023.06 – 2023.09",
     year: 2023,
@@ -135,6 +144,7 @@ const projects = [
   },
   {
     id: 9,
+    hero: "/hero/9.webp",
     title: "Red Image 'Source Code': Nationalist Films",
     time: "2022.11 – 2023.09",
     year: 2022,
@@ -151,6 +161,7 @@ const projects = [
   },
   {
     id: 10,
+    hero: "/hero/10.webp",
     title: "Mobile App Privacy Policies in China",
     time: "2022.11 – 2022.09",
     year: 2022,
@@ -167,6 +178,7 @@ const projects = [
   },
   {
     id: 11,
+    hero: "/hero/11.webp",
     title: "Fertility Dilemma in China",
     time: "2022.07 – 2022.09",
     year: 2022,
@@ -183,6 +195,7 @@ const projects = [
   },
   {
     id: 12,
+    hero: "/hero/12.webp",
     title: "FDHs' Resilience in Hong Kong",
     time: "2024.10 – 2025.04",
     year: 2024,
@@ -190,7 +203,7 @@ const projects = [
     method: -0.7,
     theme: "Mental Health",
     color: "#8B7FD6",
-    size: "large",
+    size: "medium",
     summary: "How did foreign domestic helpers (FDHs) in Hong Kong use digital tools to build resilience and maintain mental well-being during COVID-19?",
     data: "4 independent in-depth interviews with domestic workers",
     methodDetail: "Interview-based qualitative research with thematic analysis to identify coping strategies and resilience factors",
@@ -199,6 +212,7 @@ const projects = [
   },
   {
     id: 13,
+    hero: "/hero/13.webp",
     title: "Remember Me: Digital Memory Service for Older Adults",
     time: "2024.09 – 2024.12",
     year: 2024,
@@ -215,6 +229,7 @@ const projects = [
   }
 ];
 
+/* 主题色图例 */
 const themeColors = {
   "Mental Health": "#8B7FD6",
   "Ethics": "#FF6B35",
@@ -227,27 +242,43 @@ const themeColors = {
 };
 
 const sizeMap = {
-  "small": { desktop: 16, mobile: 12 },
-  "medium": { desktop: 24, mobile: 18 },
-  "large": { desktop: 32, mobile: 24 }
+  small:  { desktop: 14, mobile: 10 },
+  medium: { desktop: 20, mobile: 14 },
+  large:  { desktop: 28, mobile: 20 }
 };
 
+/* -------------------------- 公共路径 & 图片工具 -------------------------- */
+/** 同时兼容 Vite（import.meta.env.BASE_URL）和 CRA（process.env.PUBLIC_URL）**/
+function getBaseUrl() {
+  // 优先 Vite，其次 CRA，最后回退为 "/"
+  const viteBase = typeof import.meta !== 'undefined' && import.meta?.env?.BASE_URL;
+  const craBase  = typeof process !== 'undefined' && process?.env?.PUBLIC_URL;
+  const base = viteBase || craBase || '/';
+  return base.endsWith('/') ? base.slice(0, -1) : base; // 去掉尾斜杠，便于拼接
+}
+
+function resolveHeroSrc(heroPath) {
+  // heroPath 可能以 "/" 开头，例如 "/hero/1.webp"
+  const clean = heroPath.startsWith('/') ? heroPath : `/${heroPath}`;
+  return `${getBaseUrl()}${clean}`;
+}
+
+/* -------------------------- 圆点节点 -------------------------- */
 function ProjectNode({ project, isHovered, onClick, onHover, x, y, mobile }) {
   const sizeValue = mobile ? sizeMap[project.size].mobile : sizeMap[project.size].desktop;
-  
+
   return (
-    <g
-      onClick={() => onClick(project)}
-      onMouseEnter={() => onHover(project)}
-      onMouseLeave={() => onHover(null)}
-      style={{ cursor: 'pointer' }}
-    >
+    <g style={{ cursor: 'pointer' }}>
       <circle
         cx={x}
         cy={y}
         r={isHovered ? sizeValue * 0.7 : sizeValue * 0.5}
         fill={project.color}
         opacity={isHovered ? 1 : 0.9}
+        pointerEvents="all"
+        onClick={() => onClick(project)}
+        onMouseEnter={() => onHover(project)}
+        onMouseLeave={() => onHover(null)}
         style={{
           filter: isHovered ? 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -258,103 +289,122 @@ function ProjectNode({ project, isHovered, onClick, onHover, x, y, mobile }) {
   );
 }
 
+/* -------------------------- 主组件 -------------------------- */
 export default function ResearchTimeline() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [hoveredProject, setHoveredProject] = useState(null);
-  const [dimensions, setDimensions] = useState({ width: 1200, height: 600 });
+  const [viewport, setViewport] = useState({ width: 1200, height: 600 });
   const [mobile, setMobile] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
   const [showLegend, setShowLegend] = useState(true);
 
+  // 右侧面板宽度（与布局联动）
+  const PANEL_WIDTH = 520;
+  const PANEL_GAP = 24;
+
   useEffect(() => {
     document.title = "Research Journey of Yuting";
-    
     const updateDimensions = () => {
       const isMobile = window.innerWidth < 768;
       setMobile(isMobile);
-      const width = isMobile ? window.innerWidth - 40 : Math.min(1200, window.innerWidth - 120);
-      const height = isMobile ? window.innerHeight * 0.6 : 600;
-      setDimensions({ width, height });
-      
-      if (isMobile) {
-        setShowGuide(false);
-        setShowLegend(false);
-      } else {
-        setShowGuide(true);
-        setShowLegend(true);
-      }
+
+      // 让坐标系默认更“小”一些（高度降低 + 宽度留白更多）
+      const maxSVGWidth = isMobile ? window.innerWidth - 28 : Math.min(1100, window.innerWidth - 160);
+      const svgHeight = isMobile ? Math.max(380, window.innerHeight * 0.55) : 520;
+
+      setViewport({ width: maxSVGWidth, height: svgHeight });
+
+      setShowGuide(!isMobile);
+      setShowLegend(!isMobile);
     };
-    
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  const padding = mobile 
-    ? { top: 60, right: 40, bottom: 60, left: 60 }
-    : { top: 80, right: 100, bottom: 80, left: 100 };
+  // 当右侧面板打开时，整体内容区域右侧留出空间，防止最右侧点被挡
+  const rightInset = (!mobile && selectedProject) ? (PANEL_WIDTH + PANEL_GAP) : 0;
+
+  const padding = mobile
+    ? { top: 48, right: 24, bottom: 100, left: 52 }
+    : { top: 56, right: 60, bottom: 96, left: 70 };
 
   const minYear = 2022;
   const maxYear = 2025;
 
+  const innerWidth  = useMemo(() => Math.max(260, viewport.width - padding.left - padding.right), [viewport, padding]);
+  const innerHeight = useMemo(() => Math.max(240, viewport.height - padding.top - padding.bottom), [viewport, padding]);
+
+  // 依据“留出右侧面板空间”重新计算可用 SVG 宽度
+  const svgWidthWithInset = viewport.width - rightInset;
+
   const getX = (year, month) => {
-    const yearFrac = year + month / 12;
-    return padding.left + ((yearFrac - minYear) / (maxYear + 1 - minYear)) * (dimensions.width - padding.left - padding.right);
+    const yearFrac = year + month / 12; // 2025.09 → 2025.75
+    const t = (yearFrac - minYear) / (maxYear + 1 - minYear); // 归一化到 [0,1]，覆盖到 2025 年末
+    return padding.left + t * (svgWidthWithInset - padding.left - padding.right);
   };
 
+  // method ∈ [-1,1]（-1=Qual，+1=Quant），保持上下边距一致；quant/qual标签字体一致
   const getY = (method) => {
-    return padding.top + ((1 - method) / 2) * (dimensions.height - padding.top - padding.bottom);
+    const normalized = (1 - method) / 2; // [-1,1] → [1,0] 再 /2 → [1,0] 映射到 [0,1]
+    const margin = 0.08;                // 上下各留 8% 空白，避免点贴边
+    const yNorm = margin + normalized * (1 - 2 * margin);
+    return padding.top + yNorm * innerHeight;
   };
 
   return (
     <div style={{
       width: '100vw',
-      height: '100vh',
+      minHeight: mobile ? '100svh' : '100vh',
+      maxWidth: '100vw',
       background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
       display: 'flex',
       flexDirection: 'column',
       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
       overflow: 'hidden',
-      paddingBottom: showLegend ? (mobile ? 90 : 110) : 0
+      paddingBottom: mobile ? 80 : 100,
+      paddingRight: rightInset, // 关键：为右侧详情面板“挪”出空间
+      boxSizing: 'border-box',
+      overscrollBehaviorX: 'none'
     }}>
       {/* Header */}
       <div style={{
-        padding: mobile ? '20px 20px 15px' : '40px 60px 20px',
+        padding: mobile ? '18px 18px 12px' : '32px 48px 16px',
         background: 'rgba(255, 255, 255, 0.8)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(0,0,0,0.06)'
       }}>
         <h1 style={{
           margin: 0,
-          fontSize: mobile ? '24px' : '36px',
-          fontWeight: '700',
+          fontSize: mobile ? '22px' : '32px',
+          fontWeight: 700,
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
-          letterSpacing: '-0.5px'
+          letterSpacing: '-0.4px'
         }}>
           Research Journey of Yuting
         </h1>
         <p style={{
-          margin: '8px 0 0',
-          fontSize: mobile ? '12px' : '16px',
+          margin: '6px 0 0',
+          fontSize: mobile ? '12px' : '15px',
           color: '#666',
-          fontWeight: '400',
+          fontWeight: 400,
           letterSpacing: '0.2px'
         }}>
           Computational Social Science × Mental Health × Marginalized Communities
         </p>
       </div>
 
-      {/* Guide Toggle Button */}
+      {/* Guide Toggle */}
       <button
         onClick={() => setShowGuide(!showGuide)}
         style={{
           position: 'absolute',
-          top: mobile ? '80px' : '140px',
-          right: mobile ? '15px' : '40px',
-          width: mobile ? '40px' : '48px',
-          height: mobile ? '40px' : '48px',
+          top: mobile ? '72px' : '120px',
+          right: mobile ? '12px' : (12 + rightInset) + 'px',
+          width: mobile ? 36 : 44,
+          height: mobile ? 36 : 44,
           borderRadius: '50%',
           border: 'none',
           background: 'white',
@@ -363,8 +413,8 @@ export default function ResearchTimeline() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: mobile ? '16px' : '20px',
-          fontWeight: '600',
+          fontSize: mobile ? 16 : 18,
+          fontWeight: 600,
           color: '#667eea',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: 11
@@ -385,13 +435,13 @@ export default function ResearchTimeline() {
       {showGuide && (
         <div style={{
           position: 'absolute',
-          top: mobile ? '130px' : '200px',
-          right: mobile ? '15px' : '40px',
+          top: mobile ? '116px' : '176px',
+          right: mobile ? '12px' : (12 + rightInset) + 'px',
           background: 'white',
-          padding: mobile ? '16px' : '24px',
-          borderRadius: '12px',
+          padding: mobile ? '14px' : '20px',
+          borderRadius: 12,
           boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-          maxWidth: mobile ? '180px' : '240px',
+          maxWidth: mobile ? 180 : 240,
           zIndex: 10,
           animation: 'fadeIn 0.3s ease-out'
         }}>
@@ -405,90 +455,88 @@ export default function ResearchTimeline() {
               to { transform: translateX(0); }
             }
           `}</style>
-          <h3 style={{ margin: '0 0 12px', fontSize: mobile ? '13px' : '15px', fontWeight: '600', color: '#333' }}>
+          <h3 style={{ margin: '0 0 10px', fontSize: mobile ? 13 : 15, fontWeight: 600, color: '#333' }}>
             Visual Guide
           </h3>
-          <div style={{ fontSize: mobile ? '11px' : '13px', color: '#666', lineHeight: '1.6' }}>
-            <div style={{ marginBottom: '10px' }}>
-              <strong>Y-axis:</strong> Method<br/>
-              <span style={{ fontSize: mobile ? '10px' : '12px', color: '#999' }}>Top = Quant<br/>Bottom = Qual</span>
+          <div style={{ fontSize: mobile ? 11 : 13, color: '#666', lineHeight: 1.6 }}>
+            <div style={{ marginBottom: 8 }}>
+              <strong>Y-axis:</strong> Method<br />
+              <span style={{ fontSize: mobile ? 10 : 12, color: '#999' }}>Top = Quant<br />Bottom = Qual</span>
             </div>
-            <div style={{ marginBottom: '10px' }}>
+            <div style={{ marginBottom: 8 }}>
               <strong>X-axis:</strong> Timeline
             </div>
             <div>
-              <strong>Color:</strong> Theme<br/>
+              <strong>Color:</strong> Theme<br />
               <strong>Size:</strong> Scale
             </div>
           </div>
         </div>
       )}
 
-      {/* Main Visualization */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: mobile ? '0 20px' : '0 60px' }}>
-        <svg width={dimensions.width} height={dimensions.height} style={{ maxWidth: '100%' }}>
-          {/* Y-axis labels */}
+      {/* 主图 */}
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: mobile ? '0 16px' : '0 40px' }}>
+        <svg width={svgWidthWithInset} height={viewport.height} style={{ maxWidth: '100%' }}>
+          {/* Y 轴标签（同字号） */}
           <text
-            x={padding.left - (mobile ? 35 : 50)}
-            y={padding.top - 10}
+            x={padding.left - (mobile ? 32 : 46)}
+            y={padding.top - 8}
             textAnchor="middle"
-            fontSize={mobile ? "10" : "13"}
-            fill="#999"
-            fontWeight="500"
+            fontSize={mobile ? 12 : 12}
+            fill="#888"
+            fontWeight={600}
           >
             Quant
           </text>
           <text
-            x={padding.left - (mobile ? 35 : 50)}
-            y={dimensions.height - padding.bottom + 20}
+            x={padding.left - (mobile ? 32 : 46)}
+            y={viewport.height - padding.bottom + 18}
             textAnchor="middle"
-            fontSize={mobile ? "10" : "13"}
-            fill="#999"
-            fontWeight="500"
+            fontSize={mobile ? 12 : 12}
+            fill="#888"
+            fontWeight={600}
           >
             Qual
           </text>
-          
-          {/* Y-axis line */}
+
+          {/* 轴线 */}
           <line
             x1={padding.left}
             y1={padding.top}
             x2={padding.left}
-            y2={dimensions.height - padding.bottom}
+            y2={viewport.height - padding.bottom}
             stroke="#ddd"
-            strokeWidth="2"
+            strokeWidth={1}
           />
-
-          {/* X-axis (timeline) */}
           <line
             x1={padding.left}
-            y1={dimensions.height - padding.bottom}
-            x2={dimensions.width - padding.right}
-            y2={dimensions.height - padding.bottom}
+            y1={viewport.height - padding.bottom}
+            x2={svgWidthWithInset - padding.right}
+            y2={viewport.height - padding.bottom}
             stroke="#ddd"
-            strokeWidth="2"
+            strokeWidth={1}
           />
 
-          {/* Year markers */}
+          {/* 年份刻度 */}
           {[2022, 2023, 2024, 2025].map(year => {
             const x = getX(year, 6);
             return (
               <g key={year}>
                 <line
                   x1={x}
-                  y1={dimensions.height - padding.bottom}
+                  y1={viewport.height - padding.bottom}
                   x2={x}
-                  y2={dimensions.height - padding.bottom + 10}
+                  y2={viewport.height - padding.bottom + 8}
                   stroke="#999"
                   strokeWidth="2"
                 />
                 <text
                   x={x}
-                  y={dimensions.height - padding.bottom + (mobile ? 25 : 30)}
+                  y={viewport.height - padding.bottom + (mobile ? 22 : 26)}
                   textAnchor="middle"
-                  fontSize={mobile ? "11" : "14"}
+                  fontSize={mobile ? 11 : 12}
                   fill="#666"
-                  fontWeight="600"
+                  fontWeight={600}
                 >
                   {mobile ? `'${year.toString().slice(2)}` : year}
                 </text>
@@ -496,7 +544,7 @@ export default function ResearchTimeline() {
             );
           })}
 
-          {/* Project nodes */}
+          {/* 项目节点 */}
           {projects.map(project => {
             const x = getX(project.year, project.month);
             const y = getY(project.method);
@@ -514,22 +562,24 @@ export default function ResearchTimeline() {
             );
           })}
 
-          {/* Hover tooltip */}
+          {/* 悬浮提示 */}
           {hoveredProject && !selectedProject && !mobile && (
             <g>
               <rect
-                x={getX(hoveredProject.year, hoveredProject.month) - 100}
-                y={getY(hoveredProject.method) - 50}
-                width="200"
-                height="40"
-                fill="rgba(0,0,0,0.85)"
+                x={getX(hoveredProject.year, hoveredProject.month) - 110}
+                y={getY(hoveredProject.method) - 46}
+                width="220"
+                height="36"
+                fill="#000"
+                opacity="0.85"
                 rx="8"
               />
               <text
                 x={getX(hoveredProject.year, hoveredProject.month)}
-                y={getY(hoveredProject.method) - 30}
+                y={getY(hoveredProject.method) - 28}
                 textAnchor="middle"
-                fontSize="13"
+                dominantBaseline="middle"
+                fontSize="12"
                 fill="white"
                 fontWeight="500"
               >
@@ -540,15 +590,15 @@ export default function ResearchTimeline() {
         </svg>
       </div>
 
-      {/* Legend Toggle Button */}
+      {/* Legend Toggle */}
       <button
         onClick={() => setShowLegend(!showLegend)}
         style={{
           position: 'absolute',
-          bottom: mobile ? '15px' : '20px',
-          left: mobile ? '15px' : '20px',
-          width: mobile ? '40px' : '48px',
-          height: mobile ? '40px' : '48px',
+          bottom: mobile ? '14px' : '18px',
+          left: mobile ? '12px' : '16px',
+          width: mobile ? 36 : 44,
+          height: mobile ? 36 : 44,
           borderRadius: '50%',
           border: 'none',
           background: 'white',
@@ -557,8 +607,8 @@ export default function ResearchTimeline() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: mobile ? '16px' : '20px',
-          fontWeight: '600',
+          fontSize: mobile ? 16 : 18,
+          fontWeight: 600,
           color: '#667eea',
           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: 11
@@ -575,125 +625,141 @@ export default function ResearchTimeline() {
         🎨
       </button>
 
-      {/* Theme Legend */}
+      {/* 图例 */}
       {showLegend && (
         <div style={{
           position: 'absolute',
-          bottom: 0,
-          left: mobile ? '65px' : '80px',
-          transform: mobile ? 'translateY(40px)' : 'translateY(80px)',
+          bottom: mobile ? 8 : 12,
+          left: mobile ? 56 : 72,
           display: 'flex',
-          gap: mobile ? '12px' : '20px',
+          gap: mobile ? 10 : 16,
           flexWrap: 'wrap',
-          maxWidth: mobile ? 'calc(100vw - 100px)' : '700px',
+          maxWidth: mobile ? 'calc(100vw - 100px)' : 680,
           background: 'rgba(255,255,255,0.95)',
-          padding: mobile ? '12px 16px' : '16px 24px',
-          borderRadius: '12px',
+          padding: mobile ? '10px 14px' : '12px 18px',
+          borderRadius: 12,
           boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
           animation: 'fadeIn 0.3s ease-out',
           pointerEvents: 'none'
         }}>
           {Object.entries(themeColors).map(([theme, color]) => (
-            <div key={theme} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{
-                width: mobile ? '10px' : '12px',
-                height: mobile ? '10px' : '12px',
-                borderRadius: '50%',
-                background: color
-              }} />
-              <span style={{ fontSize: mobile ? '11px' : '13px', color: '#666', fontWeight: '500' }}>{theme}</span>
+            <div key={theme} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: mobile ? 10 : 12, height: mobile ? 10 : 12, borderRadius: '50%', background: color }} />
+              <span style={{ fontSize: mobile ? 11 : 12, color: '#666', fontWeight: 500 }}>{theme}</span>
             </div>
           ))}
         </div>
       )}
 
-      {/* Project Detail Panel */}
+      {/* 右侧详情面板 */}
       {selectedProject && (
         <div style={{
           position: 'fixed',
           top: 0,
           right: 0,
-          width: mobile ? '100%' : '520px',
+          left: mobile ? 0 : 'auto',
+          width: mobile ? '100vw' : `${PANEL_WIDTH}px`,
+          maxWidth: mobile ? '100vw' : `${PANEL_WIDTH}px`,
+          boxSizing: 'border-box',
           height: '100vh',
           background: 'white',
           boxShadow: '-8px 0 32px rgba(0,0,0,0.1)',
-          padding: mobile ? '40px 20px' : '60px 40px',
+          padding: mobile ? '36px 14px' : '52px 28px',
+          overflowX: 'hidden',
           overflowY: 'auto',
           zIndex: 20,
-          animation: 'slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          animation: mobile ? 'none' : 'slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}>
           <button
             onClick={() => setSelectedProject(null)}
             style={{
               position: 'absolute',
-              top: '20px',
-              right: '20px',
+              top: 16,
+              right: 16,
               border: 'none',
               background: 'transparent',
-              fontSize: '28px',
+              fontSize: 26,
               color: '#999',
               cursor: 'pointer',
               padding: 0,
-              width: '32px',
-              height: '32px'
+              width: 30,
+              height: 30
             }}
+            aria-label="Close"
+            title="Close"
           >
             ×
           </button>
 
+          {selectedProject.hero && (
+            <img
+              src={resolveHeroSrc(selectedProject.hero)}
+              alt={selectedProject.title}
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              style={{
+                width: '100%',
+                height: mobile ? 150 : 180,
+                objectFit: 'cover',
+                borderRadius: 12,
+                marginBottom: 20,
+                background: '#f4f4f4'
+              }}
+            />
+          )}
+
           <div style={{
-            width: '6px',
-            height: '40px',
+            width: 6,
+            height: 36,
             background: selectedProject.color,
-            borderRadius: '3px',
-            marginBottom: '20px'
+            borderRadius: 3,
+            marginBottom: 16
           }} />
 
           <h2 style={{
-            margin: '0 0 12px',
-            fontSize: mobile ? '22px' : '26px',
-            fontWeight: '700',
+            margin: '0 0 10px',
+            fontSize: mobile ? 20 : 24,
+            fontWeight: 700,
             color: '#1a1a1a',
-            lineHeight: '1.3',
-            letterSpacing: '-0.5px'
+            lineHeight: 1.3,
+            letterSpacing: '-0.4px'
           }}>
             {selectedProject.title}
           </h2>
 
           <div style={{
             display: 'flex',
-            gap: '10px',
-            marginBottom: '28px',
+            gap: 8,
+            marginBottom: 22,
             flexWrap: 'wrap'
           }}>
             <span style={{
-              padding: '6px 12px',
+              padding: '6px 10px',
               background: `${selectedProject.color}20`,
               color: selectedProject.color,
-              borderRadius: '20px',
-              fontSize: '11px',
-              fontWeight: '600'
+              borderRadius: 20,
+              fontSize: 11,
+              fontWeight: 600
             }}>
               {selectedProject.theme}
             </span>
             <span style={{
-              padding: '6px 12px',
+              padding: '6px 10px',
               background: '#f5f5f5',
               color: '#666',
-              borderRadius: '20px',
-              fontSize: '11px',
-              fontWeight: '500'
+              borderRadius: 20,
+              fontSize: 11,
+              fontWeight: 500
             }}>
               {selectedProject.time}
             </span>
             {selectedProject.lab && (
               <span style={{
-                padding: '6px 12px',
+                padding: '6px 10px',
                 background: '#f0f0f0',
                 color: '#666',
-                borderRadius: '20px',
-                fontSize: '11px',
-                fontWeight: '500'
+                borderRadius: 20,
+                fontSize: 11,
+                fontWeight: 500
               }}>
                 {selectedProject.lab}
               </span>
@@ -701,57 +767,59 @@ export default function ResearchTimeline() {
           </div>
 
           {selectedProject.supervisor && (
-            <div style={{ marginBottom: '24px', fontSize: '13px', color: '#888' }}>
+            <div style={{ marginBottom: 18, fontSize: 13, color: '#888' }}>
               <strong>Supervised by:</strong> {selectedProject.supervisor}
             </div>
           )}
 
-          <div style={{ marginBottom: '24px' }}>
-            <h4 style={{ margin: '0 0 10px', fontSize: '12px', fontWeight: '600', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ marginBottom: 16 }}>
+            <h4 style={{ margin: '0 0 8px', fontSize: 12, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Research Question
             </h4>
-            <p style={{ margin: 0, fontSize: '14px', color: '#333', lineHeight: '1.7' }}>
+            <p style={{ margin: 0, fontSize: 14, color: '#333', lineHeight: 1.7 }}>
               {selectedProject.summary}
             </p>
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
-            <h4 style={{ margin: '0 0 10px', fontSize: '12px', fontWeight: '600', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ marginBottom: 16 }}>
+            <h4 style={{ margin: '0 0 8px', fontSize: 12, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Data & Scale
             </h4>
-            <p style={{ margin: 0, fontSize: '14px', color: '#333', lineHeight: '1.7' }}>
+            <p style={{ margin: 0, fontSize: 14, color: '#333', lineHeight: 1.7 }}>
               {selectedProject.data}
             </p>
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
-            <h4 style={{ margin: '0 0 10px', fontSize: '12px', fontWeight: '600', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <div style={{ marginBottom: 16 }}>
+            <h4 style={{ margin: '0 0 8px', fontSize: 12, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Method & Approach
             </h4>
-            <p style={{ margin: 0, fontSize: '14px', color: '#333', lineHeight: '1.7' }}>
+            <p style={{ margin: 0, fontSize: 14, color: '#333', lineHeight: 1.7 }}>
               {selectedProject.methodDetail}
             </p>
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
-            <h4 style={{ margin: '0 0 10px', fontSize: '12px', fontWeight: '600', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Significance
-            </h4>
-            <p style={{ margin: 0, fontSize: '14px', color: '#333', lineHeight: '1.7' }}>
-              {selectedProject.significance}
-            </p>
-          </div>
+          {selectedProject.significance && (
+            <div style={{ marginBottom: 16 }}>
+              <h4 style={{ margin: '0 0 8px', fontSize: 12, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Significance
+              </h4>
+              <p style={{ margin: 0, fontSize: 14, color: '#333', lineHeight: 1.7 }}>
+                {selectedProject.significance}
+              </p>
+            </div>
+          )}
 
           <div style={{
-            padding: '18px',
+            padding: 16,
             background: '#f8f9fa',
-            borderRadius: '12px',
-            marginTop: '28px'
+            borderRadius: 12,
+            marginTop: 20
           }}>
-            <h4 style={{ margin: '0 0 10px', fontSize: '12px', fontWeight: '600', color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <h4 style={{ margin: '0 0 8px', fontSize: 12, fontWeight: 600, color: '#999', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Outcome & Status
             </h4>
-            <p style={{ margin: 0, fontSize: '13px', color: '#555', lineHeight: '1.6' }}>
+            <p style={{ margin: 0, fontSize: 13, color: '#555', lineHeight: 1.6 }}>
               {selectedProject.outcome}
             </p>
           </div>
