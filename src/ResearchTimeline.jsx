@@ -283,7 +283,7 @@ export default function ResearchTimeline() {
             letterSpacing: '0.2px',
           }}
         >
-          Computational Social Science × Mental Health × Marginalized Communities
+          Computational Social Science × Mental Health × Marginalized Communities × Human AI Interaction
         </p>
       </div>
 
