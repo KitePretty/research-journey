@@ -283,7 +283,7 @@ export default function ResearchTimeline() {
             letterSpacing: '0.2px',
           }}
         >
-          Social Justice × Platform Studies × Marginalized Communities × Human AI Interaction
+          Marginalized Communities × Platform Studies × Participatory Design × Care & Technology
         </p>
       </div>
 
