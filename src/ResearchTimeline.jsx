@@ -283,7 +283,7 @@ export default function ResearchTimeline() {
             letterSpacing: '0.2px',
           }}
         >
-          Marginalized Communities × Platform Studies × Participatory Design × Care & Technology
+          Marginalized Communities × Platform Studies × Health × Care & Technology
         </p>
       </div>
 
