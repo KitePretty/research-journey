@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /* ============== 自适应圆角 Tooltip（不会截字，不会挡鼠标） ============== */
 function SvgTooltip({ x, y, text, maxWidth, padding = 10, radius = 10 }) {
@@ -39,6 +39,18 @@ function SvgTooltip({ x, y, text, maxWidth, padding = 10, radius = 10 }) {
 
 /* -------------------------- 数据 -------------------------- */
 const projects = [
+  { id: 14, hero: "/hero/14.jpg", title: "Support Gaps in an Online Breast Health Community", time: "2026.06 – Present", year: 2026, month: 6, method: 0.35, theme: "Health Technology", color: "#4FB8FF", size: "large",
+    summary: "Where do people seeking help in an online breast health community encounter gaps between the support they need and the support they receive?",
+    data: "15,037 public threads posted to r/doihavebreastcancer between August 2022 and December 2025; a balanced analytic corpus of 1,000 threads",
+    methodDetail: "LDA topic modeling, theory-informed content analysis, iterative intercoder-reliability testing, regression, stratified bootstrapping, topic-level comparisons, and sensitivity analyses",
+    outcome: "Manuscript in progress", lab: "UNC–Chapel Hill", supervisor: "Franklin Li",
+    significance: "Develops a two-stage framework separating response access from need–support matching and identifies clinical-report reading as a concentrated support gap for future intervention design" },
+  { id: 15, hero: "/hero/15.jpg", title: "Everyday Infrastructures of Eating Disorder Recovery", time: "2026.02 – Present", year: 2026, month: 2, method: -0.85, theme: "Mental Health", color: "#8B7FD6", size: "large",
+    summary: "How does a Chinese eating-disorder mutual-aid collective organize everyday infrastructures that allow people to repeatedly re-enter recovery?",
+    data: "Six Chinese-language podcast episodes, 800+ coded excerpts, and an organizational map co-designed with members of the mutual-aid collective",
+    methodDetail: "Constructivist grounded-theory analysis combined with collaborative organizational mapping of public accounts, reading groups, podcasts, gatherings, group chats, volunteer meetings, and clinical supervision",
+    outcome: "Manuscript in progress", lab: "Georgia Tech", supervisor: "Shaowen Bardzell",
+    significance: "Develops the concept of re-enterable care to explain how recognition, volunteer coordination, readiness criteria, and boundaries around clinical authority keep peer support available and sustainable" },
   { id: 1,  hero: "/hero/1.webp",  title: "AI in Health", time: "2025.09 – Present", year: 2025, month: 9,  method: 0.3, theme: "Ethics",          color: "#FF6B35", size: "medium",
     summary: "How do AI systems in health (diagnostic or predictive tools) handle social data and what ethical issues arise?",
     data: "Early-stage dataset: product descriptions, user reviews, online discussions, and media coverage of health-related AI products",
@@ -138,11 +150,10 @@ const sizeMap = {
 };
 
 /* -------------------------- 公共路径 & 图片工具 -------------------------- */
-// 兼容 Vite（import.meta.env.BASE_URL）和 CRA（process.env.PUBLIC_URL）
+// Resolve assets against the Vite base path used by GitHub Pages.
 function getBaseUrl() {
   const viteBase = typeof import.meta !== 'undefined' && import.meta?.env?.BASE_URL;
-  const craBase  = typeof process !== 'undefined' && process?.env?.PUBLIC_URL;
-  const base = viteBase || craBase || '/';
+  const base = viteBase || '/';
   return base.endsWith('/') ? base.slice(0, -1) : base;
 }
 function resolveHeroSrc(heroPath) {
@@ -212,10 +223,9 @@ export default function ResearchTimeline() {
     : { top: 56, right: 60, bottom: 96, left: 70 };
 
   const minYear = 2022;
-  const maxYear = 2025;
+  const maxYear = 2026;
 
-  const innerWidth  = useMemo(() => Math.max(260, viewport.width - padding.left - padding.right), [viewport, padding]);
-  const innerHeight = useMemo(() => Math.max(240, viewport.height - padding.top - padding.bottom), [viewport, padding]);
+  const innerHeight = Math.max(240, viewport.height - padding.top - padding.bottom);
 
   const svgWidthWithInset = viewport.width - rightInset;
 
@@ -366,7 +376,7 @@ export default function ResearchTimeline() {
           <line x1={padding.left} y1={viewport.height - padding.bottom} x2={svgWidthWithInset - padding.right} y2={viewport.height - padding.bottom} stroke="#ddd" strokeWidth={1} />
 
           {/* 年份刻度 */}
-          {[2022, 2023, 2024, 2025].map((year) => {
+          {[2022, 2023, 2024, 2025, 2026].map((year) => {
             const x = getX(year, 6);
             return (
               <g key={year}>
