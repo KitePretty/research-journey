@@ -1,6 +1,6 @@
 # Image credits
 
-The following locally stored hero images were added for the 2026 research projects. Both source files are available under the Creative Commons CC0 1.0 Universal Public Domain Dedication.
+The following locally stored hero images are used for the 2026 research projects.
 
 ## `public/hero/14.jpg`
 
@@ -14,8 +14,7 @@ The following locally stored hero images were added for the 2026 research projec
 ## `public/hero/15.jpg`
 
 - Project: Everyday Infrastructures of Eating Disorder Recovery
-- Source title: *Group Discussion 2*
-- Creator: FromPunjab
-- Source page: https://commons.wikimedia.org/wiki/File:Group_Discussion_2.jpg
-- License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
-- Local copy: 960 px Wikimedia preview; no local visual modifications
+- Source: image provided directly by the portfolio owner
+- Original filename: `339.jpg`
+- Attribution/license: not specified
+- Local copy: no local visual modifications
