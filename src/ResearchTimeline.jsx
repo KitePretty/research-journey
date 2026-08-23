@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /* ============== 自适应圆角 Tooltip（不会截字，不会挡鼠标） ============== */
 function SvgTooltip({ x, y, text, maxWidth, padding = 10, radius = 10 }) {
@@ -39,29 +39,35 @@ function SvgTooltip({ x, y, text, maxWidth, padding = 10, radius = 10 }) {
 
 /* -------------------------- 数据 -------------------------- */
 const projects = [
-  { id: 1,  hero: "/hero/1.webp",  title: "AI in Health", time: "2025.09 – Present", year: 2025, month: 9,  method: 0.3, theme: "Ethics",          color: "#FF6B35", size: "medium",
-    summary: "How do AI systems in health (diagnostic or predictive tools) handle social data and what ethical issues arise?",
-    data: "Early-stage dataset: product descriptions, user reviews, online discussions, and media coverage of health-related AI products",
-    methodDetail: "Policy and document analysis focusing on fairness, transparency, and accountability in health AI models",
+  { id: 14, hero: "/hero/14.jpg", title: "Support Gaps in an Online Breast Health Community", time: "2026.06 – Present", year: 2026, month: 6, method: 0.35, theme: "Health Technology", color: "#4FB8FF", size: "large",
+    summary: "Where do people seeking help in an online breast health community encounter gaps between the support they need and the support they receive?",
+    data: "15,037 public threads posted to r/doihavebreastcancer between August 2022 and December 2025; a balanced analytic corpus of 1,000 threads",
+    methodDetail: "LDA topic modeling, theory-informed content analysis, iterative intercoder-reliability testing, regression, stratified bootstrapping, topic-level comparisons, and sensitivity analyses",
+    outcome: "Draft (Target: JAMIA)", lab: "UNC–Chapel Hill", supervisor: "Franklin Li",
+    significance: "Develops a two-stage framework separating response access from need–support matching and identifies clinical-report reading as a concentrated support gap for future intervention design" },
+  { id: 15, hero: "/hero/15.jpg", title: "Everyday Infrastructures of Eating Disorder Recovery", time: "2026.02 – Present", year: 2026, month: 2, method: -0.85, theme: "Mental Health", color: "#8B7FD6", size: "large",
+    summary: "How does a Chinese eating-disorder mutual-aid collective organize everyday infrastructures that allow people to repeatedly re-enter recovery?",
+    data: "Six Chinese-language podcast episodes, 800+ coded excerpts, and an organizational map co-designed with members of the mutual-aid collective",
+    methodDetail: "Constructivist grounded-theory analysis combined with collaborative organizational mapping of public accounts, reading groups, podcasts, gatherings, group chats, volunteer meetings, and clinical supervision",
     outcome: "Draft (Target: CHI 2027)", lab: "Georgia Tech", supervisor: "Shaowen Bardzell",
-    significance: "Examines the intersection of AI, health, and data justice, contributing to ethical frameworks for AI-driven healthcare" },
+    significance: "Develops the concept of re-enterable care to explain how recognition, volunteer coordination, readiness criteria, and boundaries around clinical authority keep peer support available and sustainable" },
+  { id: 1,  hero: "/hero/1.webp",  title: "AI in Health", time: "2025.09 – Present", year: 2025, month: 9,  method: 0.3, theme: "Policy",          color: "#A8E6CF", size: "large",
+    summary: "How do national policies for AI in health construct sociotechnical assemblages before systems are built, and what connective work, especially the reorganization of care, do they defer to change management and an unnamed future?",
+    data: "National policy documents on AI in health from India, China, and Nigeria, analyzed as a comparative corpus across countries",
+    methodDetail: "Comparative policy and document analysis informed by sociotechnical imaginaries, infrastructure studies, and invisible work perspectives, with systems diagrams mapping actors, components, and relations across data, governance, workforce, and care",
+    outcome: "Draft (Target: CHI 2027)", lab: "Georgia Tech", supervisor: "Shaowen Bardzell",
+    significance: "Shows how policy documents specify the components of sociotechnical assemblages for AI in health in operational detail while leaving the connective work that holds them together, above all the reorganization of care, to change management and a deferred future" },
   { id: 2,  hero: "/hero/2.webp",  title: "Rainbow School: Virtual Queer Utopian School", time: "2025.09 – Present", year: 2025, month: 9, method: -0.8, theme: "Mental Health", color: "#8B7FD6", size: "medium",
     summary: "How can a metaverse space co-designed with LGBTQ+ youth embody feminist utopian values and support community well-being?",
     data: "Interviews, fieldnotes, and event records from ~20 participants across 15 virtual rooms",
     methodDetail: "Thematic analysis combined with digital ethnography to understand how virtual spaces can foster belonging and resilience",
     outcome: "Draft (Target: CHI 2027)", lab: "Georgia Tech", supervisor: "Shaowen Bardzell",
     significance: "Explores how co-design with marginalized youth can create affirming digital environments for mental health support" },
-  { id: 3,  hero: "/hero/3.webp",  title: "From Source to Action: Machine Heuristics in AI-Mediated Advice", time: "2025.08 – Present", year: 2025, month: 8, method: 0.9, theme: "AI Cognition", color: "#FF85A2", size: "medium",
-    summary: "How does perceived AI agency affect users' trust and behavioral intention when receiving AI-mediated advice?",
-    data: "2×2 factorial experiment with approximately 200 participants",
-    methodDetail: "Controlled experiment with ANOVA to test the mediating role of machine heuristics on decision-making",
-    outcome: "Draft (Target: AAAI 2027)",
-    significance: "Addresses critical questions about human-AI trust and the cognitive mechanisms underlying AI acceptance" },
   { id: 4,  hero: "/hero/4.webp",  title: "Women's Yoga Body Image on Xiaohongshu", time: "2024.12 – Present", year: 2024, month: 12, method: 0.1, theme: "Social Media", color: "#37D5D6", size: "large",
     summary: "How are women's bodies represented in yoga-related content on Xiaohongshu, and what implications does this have for body image?",
     data: "1,000+ posts with 3586 images from #yoga, #yoga life and #yoga girl hashtags on Xiaohongshu",
     methodDetail: "Feminist-informed content analysis with descriptive statistics to examine representation patterns",
-    outcome: "Draft (Target: Body Image journal)",
+    outcome: "Accepted for presentation at the 112th National Communication Association Annual Convention (NCA 2026).",
     significance: "Contributes to understanding how social media platforms shape body image discourses in non-Western contexts" },
   { id: 5,  hero: "/hero/5.webp",  title: "TikTok Refugees on Xiaohongshu", time: "2025.03 – 2025.07", year: 2025, month: 3, method: -0.4, theme: "Social Media", color: "#37D5D6", size: "large",
     summary: "How did TikTok users reconstruct identity and community after migrating to Xiaohongshu following platform restrictions?",
@@ -73,7 +79,7 @@ const projects = [
     summary: "What factors affect user acceptance of electronic health records (EHR) among healthcare professionals and patients in China?",
     data: "Online survey with 883 valid responses from healthcare stakeholders",
     methodDetail: "Survey analysis using the UTAUT3 model to identify key determinants of technology acceptance",
-    outcome: "In Submission at IISE Transactions on Healthcare Systems Engineering",
+    outcome: "Manuscript under review at Health Science Reports.",
     significance: "Provides evidence-based recommendations for EHR implementation in healthcare systems" },
   { id: 7,  hero: "/hero/7.webp",  title: "Impact of Video Pace, Ad Relevance, and Color on Attention", time: "2024.01 – 2024.06", year: 2024, month: 1, method: 0.9, theme: "Advertising", color: "#FFB84D", size: "large",
     summary: "How do video pace, ad relevance, and color characteristics influence viewers' attention and memory in digital advertising?",
@@ -122,7 +128,6 @@ const projects = [
 /* 主题色图例 */
 const themeColors = {
   "Mental Health": "#8B7FD6",
-  "Ethics": "#FF6B35",
   "Social Media": "#37D5D6",
   "Health Technology": "#4FB8FF",
   "Policy": "#A8E6CF",
@@ -138,11 +143,10 @@ const sizeMap = {
 };
 
 /* -------------------------- 公共路径 & 图片工具 -------------------------- */
-// 兼容 Vite（import.meta.env.BASE_URL）和 CRA（process.env.PUBLIC_URL）
+// Resolve assets against the Vite base path used by GitHub Pages.
 function getBaseUrl() {
   const viteBase = typeof import.meta !== 'undefined' && import.meta?.env?.BASE_URL;
-  const craBase  = typeof process !== 'undefined' && process?.env?.PUBLIC_URL;
-  const base = viteBase || craBase || '/';
+  const base = viteBase || '/';
   return base.endsWith('/') ? base.slice(0, -1) : base;
 }
 function resolveHeroSrc(heroPath) {
@@ -212,10 +216,9 @@ export default function ResearchTimeline() {
     : { top: 56, right: 60, bottom: 96, left: 70 };
 
   const minYear = 2022;
-  const maxYear = 2025;
+  const maxYear = 2026;
 
-  const innerWidth  = useMemo(() => Math.max(260, viewport.width - padding.left - padding.right), [viewport, padding]);
-  const innerHeight = useMemo(() => Math.max(240, viewport.height - padding.top - padding.bottom), [viewport, padding]);
+  const innerHeight = Math.max(240, viewport.height - padding.top - padding.bottom);
 
   const svgWidthWithInset = viewport.width - rightInset;
 
@@ -366,7 +369,7 @@ export default function ResearchTimeline() {
           <line x1={padding.left} y1={viewport.height - padding.bottom} x2={svgWidthWithInset - padding.right} y2={viewport.height - padding.bottom} stroke="#ddd" strokeWidth={1} />
 
           {/* 年份刻度 */}
-          {[2022, 2023, 2024, 2025].map((year) => {
+          {[2022, 2023, 2024, 2025, 2026].map((year) => {
             const x = getX(year, 6);
             return (
               <g key={year}>
